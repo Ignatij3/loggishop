@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="loggi/static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="loggi/static/css/xtrastyle.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="loggi/static/fonts/PF&#32;DinDisplay&#32;Pro/stylesheet.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () {
+                (m[i].a = m[i].a || []).push(arguments)
+            };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) {
+                if (document.scripts[j].src === r) {
+                    return;
+                }
+            }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(95174775, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
+        });
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/95174775" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+
+    <script type="text/javascript">
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+
+        function uuidv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0,
+                    v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+        let device = getCookie('device')
+
+        if (device == null || device == undefined || device == "my-id") {
+            device = uuidv4()
+        }
+        document.cookie = "device=" + device + ";domain=;path=/"
+    </script>
+    <style>
+        .carousel-container {
+            position: relative;
+            width: 90%;
+            margin: 0 0;
+            overflow: hidden;
+            max-height: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 90%;
+        }
+
+        .carousel-slide {
+            flex: 0 0 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide img {
+            width: auto;
+            height: auto;
+        }
+
+        .indicators {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .indicator {
+            width: 10px;
+            height: 10px;
+            background-color: gray;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .indicator.active {
+            background-color: black;
+        }
+    </style>
+
+
+    <title>LoggiShop</title>
+    <link rel="icon" href="./assets/watermark.png" type="image/x-icon">
+</head>
+
+<body>
+    <nav id="navbar">
+        <a href="index.html" class="brand">
+            <span><img src="loggi/static/img/watermark.png"></span>
+            <span>Loggi</span>
+        </a>
+        <ul>
+            <li style="--i:0;">
+                <a href="index.html">
+                    <span>Главная</span>
+                    <span><ion-icon name="home-outline"></ion-icon></span>
+                </a>
+            </li>
+            <li style="--i:1;">
+                <a href="http://loggi.store/products/">
+                    <span>Каталог</span>
+                    <span><ion-icon name="pricetags-outline"></ion-icon></span>
+                </a>
+            </li>
+            <li style="--i:2;">
+                <a href="http://loggi.store/cart/">
+                    <span>Корзина
+                        <span class="badge badge-warning" id="cartItemCountText">0</span></span>
+                    <span><ion-icon name="basket-outline"></ion-icon><span class="badge badge-warning"
+                            id="cartItemCountIcon">0</span></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script>
+        let lastScrollTop = 0;
+        navbar = document.getElementById("navbar");
+        window.addEventListener("scroll", function () {
+            let scrollTop = window.pageYOffset ||
+                document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop) {
+                navbar.classList.add('icon');
+            } else {
+                navbar.classList.remove('icon');
+            }
+            lastScrollTop = scrollTop;
+        })
+    </script>
+
+    <div class="carousel-container" style=" top: 80px; width: 100%;">
+        <div class="carousel">
+            <div class="carousel-slide" style="transition: transform 0.5s ease-in-out 0s; transform: translateX(0%);">
+                <img src="loggi/static/img/banner1.jpg" alt="Image 1" style="width: 80%; height: auto;">
+            </div>
+            <div class="carousel-slide" style="transition: transform 0.5s ease-in-out 0s; transform: translateX(0%); ">
+                <img src="loggi/static/img/banner3.JPG" alt="Image 2" style="width: 80%; height: auto;">
+            </div>
+            <div class="carousel-slide" style="transition: transform 0.5s ease-in-out 0s; transform: translateX(0%);">
+                <img src="loggi/static/img/banner2.JPG" alt="Image 3" style="width: 80%; height: auto;">
+            </div>
+        </div>
+        <div class="indicators">
+            <div class="indicator" onclick="changeSlide(0)"></div>
+            <div class="indicator" onclick="changeSlide(1)"></div>
+            <div class="indicator active" onclick="changeSlide(2)"></div>
+
+        </div>
+    </div>
+
+
+    <section class="bg-light" style='height: 1500px;'>
+        <div class="container py-5">
+
+            <div class="row">
+
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="http://loggi.store/522">
+                            <img src="https://cdn.poizon.com/pro-img/origin-img/20220212/5148d4f373a64f46a6476e6ceffec292.jpg"
+                                class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">от 7 105&#8381;</li>
+                            </ul>
+                            <a href="http://loggi.store/shop-single.html" class="h2 text-decoration-none text-dark">NIKE
+                                AIR TRAINER 1 SP DARK SMOKE GREY</a>
+
+                            <p class="text-muted">Nike</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="http://loggi.store/523">
+                            <img src="https://cdn.poizon.com/pro-img/origin-img/20230528/c60191c31b404603b845002f4fe62cb5.jpg"
+                                class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">от 10 164&#8381;</li>
+                            </ul>
+                            <a href="http://loggi.store/shop-single.html"
+                                class="h2 text-decoration-none text-dark">ASICS GELSPOTLYTE LOW V2</a>
+
+                            <p class="text-muted">Asics</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="http://loggi.store/524">
+                            <img src="https://cdn.poizon.com/pro-img/origin-img/20220212/260062911a2647adbb9f51f29cb03c72.jpg"
+                                class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">от 11 361&#8381;</li>
+                            </ul>
+                            <a href="http://loggi.store/shop-single.html"
+                                class="h2 text-decoration-none text-dark">ADIDAS ORIGINALS SAMBA OG</a>
+
+                            <p class="text-muted">Adidas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="http://loggi.store/525">
+                            <img src="https://cdn.poizon.com/pro-img/origin-img/20220212/090eb57dc1bb404e8f99dd4ed850dd0f.jpg"
+                                class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">от 5 243&#8381;</li>
+                            </ul>
+                            <a href="http://loggi.store/shop-single.html"
+                                class="h2 text-decoration-none text-dark">ADIDAS ORIGINALS BUSENITZ </a>
+
+                            <p class="text-muted">Adidas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="http://loggi.store/526">
+                            <img src="https://cdn.poizon.com/pro-img/origin-img/20220212/2276e844e1db40cda7a7d49585e07d10.jpg"
+                                class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">от 12 026&#8381;</li>
+                            </ul>
+                            <a href="http://loggi.store/shop-single.html"
+                                class="h2 text-decoration-none text-dark">ADIDAS ORIGINALS HANDBALL SPZL</a>
+
+                            <p class="text-muted">Adidas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="http://loggi.store/527">
+                            <img src="https://cdn.poizon.com/pro-img/origin-img/20220212/89eaae2d078e464f9c33e6f98316d04d.jpg"
+                                class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                </li>
+                                <li class="text-muted text-right">от 7 238&#8381;</li>
+                            </ul>
+                            <a href="http://loggi.store/shop-single.html"
+                                class="h2 text-decoration-none text-dark">ADIDAS ORIGINALS FORUM LOW</a>
+
+                            <p class="text-muted">Adidas</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-basic">
+        <footer>
+            <div class="social"><a href="https://www.youtube.com/@loggiwear"><i class="fa fa-youtube"></i></a><a
+                    href="https://t.me/loggi_shop_bot"><i class="fa fa-telegram"></i></a><a href="index.html#"><i
+                        class="fa fa-instagram"></i></a></div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="http://loggi.store/products/">В каталог</a></li>
+                <li class="list-inline-item"><a href="http://loggi.store/info/">О нас</a></li>
+                <li class="list-inline-item"><a href="http://loggi.store/info/">Доставка</a></li>
+                <li class="list-inline-item"><a href="http://loggi.store/info/">Обратная связь</a></li>
+            </ul>
+            <p class="copyright">LoggiShop © 2023</p>
+        </footer>
+    </div>
+    <script>
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.indicator');
+
+        let currentSlide = 0;
+
+        function showSlide(slideIndex) {
+            slides.forEach(slide => slide.style.transition = "transform 0.5s ease-in-out");
+            slides.forEach(slide => slide.style.transform = `translateX(-${slideIndex * 100}%)`);
+
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            indicators[slideIndex].classList.add('active');
+        }
+
+        function changeSlide(slideIndex) {
+            currentSlide = slideIndex;
+            showSlide(currentSlide);
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 5000);
+        showSlide(currentSlide);
+    </script>
+</body>
+
+</html>
