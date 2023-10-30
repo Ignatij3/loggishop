@@ -55,8 +55,6 @@
             }
             return cookieValue;
         }
-        carousel
-
 
         function uuidv4() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -193,7 +191,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="loggi/static/scripts/jquery.bcSwipe.js"></script>
 
     <div style='margin-top: 150px;'>
         <div class="carousel-title">Обувь</div>
@@ -286,8 +283,8 @@
 
     <div style='margin-top: 100px;'>
         <div class="carousel-title">Обувь, но лучше😎</div>
-        <div id="itemCarousel" class="carousel slide carousel-dark item-carousel" data-ride="carousel" data-interval="3000">
-            <div class="carousel-control-prev" href="#itemCarousel" role="button" data-slide="prev">
+        <div id="itemCarouselSecond" class="carousel slide carousel-dark item-carousel" data-ride="carousel" data-interval="3000">
+            <div class="carousel-control-prev" href="#itemCarouselSecond" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
             </div>
@@ -366,7 +363,7 @@
                 </div>
             </div>
 
-            <div class="carousel-control-next" href="#itemCarousel" role="button" data-slide="next">
+            <div class="carousel-control-next" href="#itemCarouselSecond" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </div>
@@ -539,32 +536,30 @@
     </div>
 </body>
 <script>
-    $('.itemCarousel').bcSwipe({
-        threshold: 50
-    });
+    const itmCar = document.querySelector("#itemCarousel");
+    const itmCarSec = document.querySelector("#itemCarouselSecond");
 
-    /*
-    $('.itemCarousel').on('touchstart', function (event) {
-        const xClick = event.originalEvent.touches[0].pageX;
-        console.log("init");
+    itmCar.addEventListener('touchstart', moveSlideByTouch);
+    itmCarSec.addEventListener('touchstart', moveSlideByTouch);
+
+    function moveSlideByTouch(event) {
+        const xClick = event.touches[0].pageX;
+
         $(this).one('touchmove', function (event) {
             const xMove = event.originalEvent.touches[0].pageX;
             const sensitivityInPx = 5;
-            console.log("moving");
 
             if (Math.floor(xClick - xMove) > sensitivityInPx) {
-                $(this).carousel('next');
-                console.log("next");
+                $(this).find(".carousel-control-next").click();
             } else if (Math.floor(xClick - xMove) < -sensitivityInPx) {
-                $(this).carousel('prev');
-                console.log("prev");
+                $(this).find(".carousel-control-prev").click();
             }
         });
+
         $(this).on('touchend', function () {
             $(this).off('touchmove');
-            console.log("stop");
         });
-    });*/
+    }
 
     const slides = document.querySelectorAll('.carousel-slide');
     const indicators = document.querySelectorAll('.indicator');
@@ -575,12 +570,10 @@
         slides.forEach(slide => slide.style.transform = `translateX(-${slideIndex * 100}%)`);
         indicators.forEach(indicator => indicator.classList.remove('active'));
         indicators[slideIndex].classList.add('active');
-        console.log("sliiiiiiiiiiiiiiiiiiiiiiiiite");
     }
 
     function changeSlide(slideIndex) {
-        currentSlide
-            = slideIndex;
+        currentSlide = slideIndex;
         showSlide(currentSlide);
     }
 
