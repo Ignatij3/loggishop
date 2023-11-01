@@ -170,7 +170,7 @@
     </script>
 
     <div class="carousel-container" style="top: 80px; width: 100%;">
-        <div class="carousel">
+        <div id="bannerCarousel" class="carousel">
             <div class="carousel-slide" style="transition: transform 0.5s ease-in-out 0s; transform: translateX(0%);">
                 <img src="loggi/static/img/banner1.jpg" alt="Image 1" style="width: 80%; height: auto;">
             </div>
@@ -536,9 +536,11 @@
     </div>
 </body>
 <script>
+    const bannerCar = document.querySelector("#bannerCarousel");
     const itmCar = document.querySelector("#itemCarousel");
     const itmCarSec = document.querySelector("#itemCarouselSecond");
 
+    bannerCar.addEventListener('touchstart', moveSlideByTouch);
     itmCar.addEventListener('touchstart', moveSlideByTouch);
     itmCarSec.addEventListener('touchstart', moveSlideByTouch);
 
@@ -550,9 +552,17 @@
             const sensitivityInPx = 5;
 
             if (Math.floor(xClick - xMove) > sensitivityInPx) {
-                $(this).find(".carousel-control-next").click();
+                if (this.id == "bannerCarousel") {
+                    nextSlide();
+                } else {
+                    $(this).find(".carousel-control-next").click();
+                }
             } else if (Math.floor(xClick - xMove) < -sensitivityInPx) {
-                $(this).find(".carousel-control-prev").click();
+                if (this.id == "bannerCarousel") {
+                    prevSlide();
+                } else {
+                    $(this).find(".carousel-control-prev").click();
+                }
             }
         });
 
